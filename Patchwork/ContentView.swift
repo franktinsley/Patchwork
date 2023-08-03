@@ -40,15 +40,15 @@ struct ContentView: View {
         let system = System(nodes: [], connections: [])
         modelContext.insert(system)
         
-        let intLiteralA = Node(outputs: [Port(value: .int(2))])
-        let intLiteralB = Node(outputs: [Port(value: .int(3))])
+        let intLiteralA = Node(outputs: [Output(value: .int(2))])
+        let intLiteralB = Node(outputs: [Output(value: .int(3))])
         let addInts = Node(
             inputs: [
-                Port(name: "lhs", value: .int(0)),
-                Port(name: "rhs", value: .int(0))
+                Input(name: "lhs", value: .int(0)),
+                Input(name: "rhs", value: .int(0))
             ],
             outputs: [
-                Port(name: "Output", value: .int(0))
+                Output(name: "Output", value: .int(0))
             ]
         )
         

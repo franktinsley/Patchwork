@@ -2,10 +2,10 @@ import SwiftData
 
 @Model
 final class Connection {
-    var from: Port?
-    var to: Port?
+    var from: Output?
+    var to: Input?
     
-    init(from: Port? = nil, to: Port? = nil) {
+    init(from: Output? = nil, to: Input? = nil) {
         self.from = from
         self.to = to
     }

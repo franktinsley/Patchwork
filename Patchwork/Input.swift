@@ -2,10 +2,10 @@ import Foundation
 import SwiftData
 
 @Model
-final class Port {
+final class Input {
     var name: String?
-    var connections: [Connection]?
-
+    var connection: Connection?
+    
     private var _value: String?
     var value: Value? {
         get { try! JSONDecoder().decode(Value.self, from: _value!.data(using: .utf8)!) }
@@ -18,6 +18,6 @@ final class Port {
     }
 }
 
-extension Port {
-    var metal: String { "Port\nValue:\n\(self.value?.metal ?? "")" }
+extension Input {
+    var metal: String { "Input\nValue:\n\(self.value?.metal ?? "")" }
 }

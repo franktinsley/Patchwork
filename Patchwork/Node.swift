@@ -11,10 +11,10 @@ final class Node {
         set { _type = try! String(data: JSONEncoder().encode(newValue), encoding: .utf8)! }
     }
     
-    var inputs: [Port]
-    var outputs: [Port]
+    var inputs: [Input]
+    var outputs: [Output]
     
-    init(name: String? = nil, type: Value? = nil, inputs: [Port] = [], outputs: [Port] = []) {
+    init(name: String? = nil, type: Value? = nil, inputs: [Input] = [], outputs: [Output] = []) {
         self.name = name
         self.type = type
         self.inputs = inputs
