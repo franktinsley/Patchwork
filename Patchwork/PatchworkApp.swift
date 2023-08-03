@@ -1,18 +1,11 @@
-//
-//  PatchworkApp.swift
-//  Patchwork
-//
-//  Created by Frank Tinsley on 8/2/23.
-//
-
-import SwiftUI
 import SwiftData
+import SwiftUI
 import UniformTypeIdentifiers
 
 @main
 struct PatchworkApp: App {
     let schema = Schema([
-    	Item.self,
+    	System.self
     ])
 
     var body: some Scene {

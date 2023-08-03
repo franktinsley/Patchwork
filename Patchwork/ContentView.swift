@@ -5,59 +5,72 @@
 //  Created by Frank Tinsley on 8/2/23.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query private var systems: [System]
 
     var body: some View {
         NavigationSplitView {
             List {
-                ForEach(items) { item in
+                ForEach(systems) { system in
                     NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        Text(system.metal)
                     } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+                        Text(system.metal)
                     }
                 }
-                .onDelete(perform: deleteItems)
+                .onDelete(perform: deleteSystems)
             }
             .toolbar {
-#if os(iOS)
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-#endif
                 ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
+                    Button(action: addSystem) {
+                        Label("Add System", systemImage: "plus")
                     }
                 }
             }
         } detail: {
-            Text("Select an item")
+            Text("Detail View")
         }
     }
 
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
+    private func addSystem() {
+        let system = System(nodes: [], connections: [])
+        modelContext.insert(system)
+        
+        let intLiteralA = Node(outputs: [Port(value: .int(2))])
+        let intLiteralB = Node(outputs: [Port(value: .int(3))])
+        let addInts = Node(
+            inputs: [
+                Port(name: "lhs", value: .int(0)),
+                Port(name: "rhs", value: .int(0))
+            ],
+            outputs: [
+                Port(name: "Output", value: .int(0))
+            ]
+        )
+        
+        system.nodes.append(contentsOf: [intLiteralA, intLiteralB, addInts])
+        
+        let connectionA = Connection(from: intLiteralA.outputs[0], to: addInts.inputs[0])
+        let connectionB = Connection(from: intLiteralB.outputs[0], to: addInts.inputs[1])
+        
+        
+        system.connections.append(contentsOf: [
+            connectionA, connectionB
+        ])
     }
 
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
+    private func deleteSystems(offsets: IndexSet) {
+        for index in offsets {
+            modelContext.delete(systems[index])
         }
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: System.self, inMemory: true)
 }

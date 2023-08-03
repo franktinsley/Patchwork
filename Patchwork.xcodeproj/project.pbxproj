@@ -9,20 +9,28 @@
 /* Begin PBXBuildFile section */
 		226B68AE2A7B0F52008CA709 /* PatchworkApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226B68AD2A7B0F52008CA709 /* PatchworkApp.swift */; };
 		226B68B02A7B0F52008CA709 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226B68AF2A7B0F52008CA709 /* ContentView.swift */; };
-		226B68B22A7B0F52008CA709 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226B68B12A7B0F52008CA709 /* Item.swift */; };
 		226B68B42A7B0F54008CA709 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 226B68B32A7B0F54008CA709 /* Assets.xcassets */; };
 		226B68B92A7B0F54008CA709 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 226B68B82A7B0F54008CA709 /* Preview Assets.xcassets */; };
+		226B68C02A7B0FCF008CA709 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226B68BF2A7B0FCF008CA709 /* Node.swift */; };
+		226B68C22A7B1121008CA709 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226B68C12A7B1121008CA709 /* System.swift */; };
+		226B68C42A7B1168008CA709 /* Port.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226B68C32A7B1168008CA709 /* Port.swift */; };
+		226B68C62A7B11B2008CA709 /* Value.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226B68C52A7B11B2008CA709 /* Value.swift */; };
+		226B68C82A7B11CF008CA709 /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226B68C72A7B11CF008CA709 /* Connection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		226B68AA2A7B0F52008CA709 /* Patchwork.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Patchwork.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		226B68AD2A7B0F52008CA709 /* PatchworkApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchworkApp.swift; sourceTree = "<group>"; };
 		226B68AF2A7B0F52008CA709 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		226B68B12A7B0F52008CA709 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		226B68B32A7B0F54008CA709 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		226B68B52A7B0F54008CA709 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		226B68B62A7B0F54008CA709 /* Patchwork.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Patchwork.entitlements; sourceTree = "<group>"; };
 		226B68B82A7B0F54008CA709 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		226B68BF2A7B0FCF008CA709 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
+		226B68C12A7B1121008CA709 /* System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
+		226B68C32A7B1168008CA709 /* Port.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Port.swift; sourceTree = "<group>"; };
+		226B68C52A7B11B2008CA709 /* Value.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Value.swift; sourceTree = "<group>"; };
+		226B68C72A7B11CF008CA709 /* Connection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +65,11 @@
 			children = (
 				226B68AD2A7B0F52008CA709 /* PatchworkApp.swift */,
 				226B68AF2A7B0F52008CA709 /* ContentView.swift */,
-				226B68B12A7B0F52008CA709 /* Item.swift */,
+				226B68C12A7B1121008CA709 /* System.swift */,
+				226B68BF2A7B0FCF008CA709 /* Node.swift */,
+				226B68C32A7B1168008CA709 /* Port.swift */,
+				226B68C72A7B11CF008CA709 /* Connection.swift */,
+				226B68C52A7B11B2008CA709 /* Value.swift */,
 				226B68B32A7B0F54008CA709 /* Assets.xcassets */,
 				226B68B52A7B0F54008CA709 /* Info.plist */,
 				226B68B62A7B0F54008CA709 /* Patchwork.entitlements */,
@@ -144,8 +156,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				226B68C42A7B1168008CA709 /* Port.swift in Sources */,
+				226B68C22A7B1121008CA709 /* System.swift in Sources */,
+				226B68C62A7B11B2008CA709 /* Value.swift in Sources */,
+				226B68C82A7B11CF008CA709 /* Connection.swift in Sources */,
 				226B68B02A7B0F52008CA709 /* ContentView.swift in Sources */,
-				226B68B22A7B0F52008CA709 /* Item.swift in Sources */,
+				226B68C02A7B0FCF008CA709 /* Node.swift in Sources */,
 				226B68AE2A7B0F52008CA709 /* PatchworkApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
