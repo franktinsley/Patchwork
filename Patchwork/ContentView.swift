@@ -37,12 +37,12 @@ struct ContentView: View {
     }
 
     private func addSystem() {
-        let system = System(nodes: [], connections: [])
+        let system = System(modules: [], connections: [])
         modelContext.insert(system)
 
-        let intLiteralA = Node(outputs: [.init(value: .int(2))])
-        let intLiteralB = Node(outputs: [.init(value: .int(3))])
-        let addInts = Node(
+        let intLiteralA = Module(outputs: [.init(value: .int(2))])
+        let intLiteralB = Module(outputs: [.init(value: .int(3))])
+        let addInts = Module(
             inputs: [
                 .init(name: "lhs", value: .int(0)),
                 .init(name: "rhs", value: .int(0))
@@ -52,7 +52,7 @@ struct ContentView: View {
             ]
         )
 
-        system.nodes.append(contentsOf: [intLiteralA, intLiteralB, addInts])
+        system.modules.append(contentsOf: [intLiteralA, intLiteralB, addInts])
         system.connections.append(contentsOf: [
             .init(from: intLiteralA.outputs[0], to: addInts.inputs[0]),
             .init(from: intLiteralB.outputs[0], to: addInts.inputs[1])

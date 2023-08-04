@@ -2,15 +2,15 @@ import SwiftData
 
 @Model
 final class System {
-    var nodes: [Node]
+    var modules: [Module]
     var connections: [Connection]
 
-    init(nodes: [Node], connections: [Connection]) {
-        self.nodes = nodes
+    init(modules: [Module], connections: [Connection]) {
+        self.modules = modules
         self.connections = connections
     }
 }
 
 extension System {
-    var metal: String { "System Metal\nNodes:\n\(self.nodes.map { $0.metal }.joined(separator: "\n"))" }
+    var metal: String { "System Metal\nModules:\n\(self.modules.map { $0.metal }.joined(separator: "\n"))" }
 }

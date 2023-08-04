@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Node {
+final class Module {
     var name: String?
 
     private var _type: String?
@@ -22,6 +22,6 @@ final class Node {
     }
 }
 
-extension Node {
-    var metal: String { "Node\nInputs:\n\(inputs.map { $0.metal }.joined(separator: "\n"))\nOutputs:\n\(outputs.map { $0.metal }.joined(separator: "\n"))" }
+extension Module {
+    var metal: String { "Module\nInputs:\n\(inputs.map { $0.metal }.joined(separator: "\n"))\nOutputs:\n\(outputs.map { $0.metal }.joined(separator: "\n"))" }
 }
