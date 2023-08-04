@@ -5,7 +5,7 @@ import UniformTypeIdentifiers
 @main
 struct PatchworkApp: App {
     let schema = Schema([
-    	System.self
+        System.self
     ])
 
     var body: some Scene {

@@ -11,7 +11,7 @@ final class Output {
         get { try! JSONDecoder().decode(Value.self, from: _value!.data(using: .utf8)!) }
         set { _value = try! String(data: JSONEncoder().encode(newValue), encoding: .utf8)! }
     }
-    
+
     init(name: String? = nil, value: Value? = nil) {
         self.name = name
         self.value = value
@@ -19,5 +19,5 @@ final class Output {
 }
 
 extension Output {
-    var metal: String { "Output\nValue:\n\(self.value?.metal ?? "")" }
+    var metal: String { "Output\nValue:\n\(value?.metal ?? "")" }
 }

@@ -4,7 +4,7 @@ import SwiftData
 final class System {
     var nodes: [Node]
     var connections: [Connection]
-    
+
     init(nodes: [Node], connections: [Connection]) {
         self.nodes = nodes
         self.connections = connections

@@ -39,27 +39,23 @@ struct ContentView: View {
     private func addSystem() {
         let system = System(nodes: [], connections: [])
         modelContext.insert(system)
-        
-        let intLiteralA = Node(outputs: [Output(value: .int(2))])
-        let intLiteralB = Node(outputs: [Output(value: .int(3))])
+
+        let intLiteralA = Node(outputs: [.init(value: .int(2))])
+        let intLiteralB = Node(outputs: [.init(value: .int(3))])
         let addInts = Node(
             inputs: [
-                Input(name: "lhs", value: .int(0)),
-                Input(name: "rhs", value: .int(0))
+                .init(name: "lhs", value: .int(0)),
+                .init(name: "rhs", value: .int(0))
             ],
             outputs: [
-                Output(name: "Output", value: .int(0))
+                .init(name: "Output", value: .int(0))
             ]
         )
-        
+
         system.nodes.append(contentsOf: [intLiteralA, intLiteralB, addInts])
-        
-        let connectionA = Connection(from: intLiteralA.outputs[0], to: addInts.inputs[0])
-        let connectionB = Connection(from: intLiteralB.outputs[0], to: addInts.inputs[1])
-        
-        
         system.connections.append(contentsOf: [
-            connectionA, connectionB
+            .init(from: intLiteralA.outputs[0], to: addInts.inputs[0]),
+            .init(from: intLiteralB.outputs[0], to: addInts.inputs[1])
         ])
     }
 
