@@ -20,4 +20,8 @@ final class Input {
 
 extension Input {
     var metal: String { "Input\nValue:\n\(value?.metal ?? "")" }
+
+    static var preview: Input {
+        Input(name: "My Input", value: .bool(false))
+    }
 }

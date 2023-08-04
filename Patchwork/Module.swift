@@ -14,14 +14,40 @@ final class Module {
     var inputs: [Input]
     var outputs: [Output]
 
-    init(name: String? = nil, type: Value? = nil, inputs: [Input] = [], outputs: [Output] = []) {
+    var parent: Module?
+    var positionX: Float
+    var positionY: Float
+
+    @Relationship(.cascade) var children: [Module]
+    @Relationship(.cascade) var connections: [Connection]
+
+    init(
+        name: String? = nil,
+        type: Value? = nil,
+        inputs: [Input] = [],
+        outputs: [Output] = [],
+        parent: Module? = nil,
+        positionX: Float = 0,
+        positionY: Float = 0,
+        children: [Module] = [],
+        connections: [Connection] = []
+    ) {
         self.name = name
         self.type = type
         self.inputs = inputs
         self.outputs = outputs
+        self.parent = parent
+        self.positionX = positionX
+        self.positionY = positionY
+        self.children = children
+        self.connections = connections
     }
 }
 
 extension Module {
-    var metal: String { "Module\nInputs:\n\(inputs.map { $0.metal }.joined(separator: "\n"))\nOutputs:\n\(outputs.map { $0.metal }.joined(separator: "\n"))" }
+    var metal: String { "\(self)" }
+
+    static var preview: Module {
+        Module(name: "My Module")
+    }
 }

@@ -4,12 +4,8 @@ import UniformTypeIdentifiers
 
 @main
 struct PatchworkApp: App {
-    let schema = Schema([
-        System.self
-    ])
-
     var body: some Scene {
-        DocumentGroup(editing: schema, contentType: .itemDocument) {
+        DocumentGroup(editing: Module.self, contentType: .itemDocument) {
             ContentView()
         }
     }

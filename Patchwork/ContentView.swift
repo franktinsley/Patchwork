@@ -10,38 +10,38 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var systems: [System]
+    @Query private var modules: [Module]
 
     var body: some View {
-        NavigationSplitView {
+        NavigationStack {
             List {
-                ForEach(systems) { system in
-                    NavigationLink {
-                        Text(system.metal)
-                    } label: {
-                        Text(system.metal)
+                if modules.isEmpty {
+                    Text("No modules")
+                } else {
+                    ForEach(modules) { module in
+                        if module.parent == nil {
+                            ModuleView(module: module)
+                        }
                     }
+                    .onDelete(perform: deleteModules)
                 }
-                .onDelete(perform: deleteSystems)
             }
             .toolbar {
                 ToolbarItem {
-                    Button(action: addSystem) {
-                        Label("Add System", systemImage: "plus")
+                    Button(action: addModule) {
+                        Label("Add Module", systemImage: "plus")
                     }
                 }
             }
-        } detail: {
-            Text("Detail View")
         }
     }
 
-    private func addSystem() {
-        let system = System(modules: [], connections: [])
-        modelContext.insert(system)
+    private func addModule() {
+        let module = Module(outputs: [])
+        modelContext.insert(module)
 
-        let intLiteralA = Module(outputs: [.init(value: .int(2))])
-        let intLiteralB = Module(outputs: [.init(value: .int(3))])
+        let intLiteralA = Module(outputs: [.init(value: .int(2))], parent: module)
+        let intLiteralB = Module(outputs: [.init(value: .int(3))], parent: module)
         let addInts = Module(
             inputs: [
                 .init(name: "lhs", value: .int(0)),
@@ -49,24 +49,25 @@ struct ContentView: View {
             ],
             outputs: [
                 .init(name: "Output", value: .int(0))
-            ]
+            ],
+            parent: module
         )
 
-        system.modules.append(contentsOf: [intLiteralA, intLiteralB, addInts])
-        system.connections.append(contentsOf: [
+        module.children.append(contentsOf: [intLiteralA, intLiteralB, addInts])
+        module.connections.append(contentsOf: [
             .init(from: intLiteralA.outputs[0], to: addInts.inputs[0]),
             .init(from: intLiteralB.outputs[0], to: addInts.inputs[1])
         ])
     }
 
-    private func deleteSystems(offsets: IndexSet) {
+    private func deleteModules(at offsets: IndexSet) {
         for index in offsets {
-            modelContext.delete(systems[index])
+            modelContext.delete(modules[index])
         }
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: System.self, inMemory: true)
+        .modelContainer(PreviewSampleData.container)
 }

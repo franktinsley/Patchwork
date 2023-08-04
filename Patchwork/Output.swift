@@ -20,4 +20,8 @@ final class Output {
 
 extension Output {
     var metal: String { "Output\nValue:\n\(value?.metal ?? "")" }
+    
+    static var preview: Output {
+        Output(name: "Mu Output", value: .bool(false))
+    }
 }
