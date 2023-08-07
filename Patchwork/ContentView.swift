@@ -11,53 +11,41 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var modules: [Module]
+    @State private var showingAddModuleDialog = false
 
     var body: some View {
         NavigationStack {
-            List {
-                if modules.isEmpty {
-                    Text("No modules")
-                } else {
-                    ForEach(modules) { module in
-                        if module.parent == nil {
-                            ModuleView(module: module)
-                        }
+            ZStack {
+                ForEach(modules) { module in
+                    if module.parent == nil {
+                        ModuleView(module: module)
                     }
-                    .onDelete(perform: deleteModules)
                 }
+                .onDelete(perform: deleteModules)
             }
             .toolbar {
                 ToolbarItem {
-                    Button(action: addModule) {
+                    Button(action: { showingAddModuleDialog = true }) {
                         Label("Add Module", systemImage: "plus")
                     }
                 }
             }
         }
+        .confirmationDialog(
+            "Add Module",
+            isPresented: $showingAddModuleDialog
+        ) {
+            ForEach(Value.allCases) { value in
+                Button(value.name) { addModule(module: Module.module(for: value, parent: nil)) }
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Choose module to add")
+        }
     }
 
-    private func addModule() {
-        let module = Module(outputs: [])
+    private func addModule(module: Module) {
         modelContext.insert(module)
-
-        let intLiteralA = Module(outputs: [.init(value: .int(2))], parent: module)
-        let intLiteralB = Module(outputs: [.init(value: .int(3))], parent: module)
-        let addInts = Module(
-            inputs: [
-                .init(name: "lhs", value: .int(0)),
-                .init(name: "rhs", value: .int(0))
-            ],
-            outputs: [
-                .init(name: "Output", value: .int(0))
-            ],
-            parent: module
-        )
-
-        module.children.append(contentsOf: [intLiteralA, intLiteralB, addInts])
-        module.connections.append(contentsOf: [
-            .init(from: intLiteralA.outputs[0], to: addInts.inputs[0]),
-            .init(from: intLiteralB.outputs[0], to: addInts.inputs[1])
-        ])
     }
 
     private func deleteModules(at offsets: IndexSet) {

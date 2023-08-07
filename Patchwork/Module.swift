@@ -15,8 +15,8 @@ final class Module {
     var outputs: [Output]
 
     var parent: Module?
-    var positionX: Float
-    var positionY: Float
+    var positionX: Double
+    var positionY: Double
 
     @Relationship(.cascade) var children: [Module]
     @Relationship(.cascade) var connections: [Connection]
@@ -27,8 +27,8 @@ final class Module {
         inputs: [Input] = [],
         outputs: [Output] = [],
         parent: Module? = nil,
-        positionX: Float = 0,
-        positionY: Float = 0,
+        positionX: Double = 200,
+        positionY: Double = 200,
         children: [Module] = [],
         connections: [Connection] = []
     ) {
@@ -50,4 +50,9 @@ extension Module {
     static var preview: Module {
         Module(name: "My Module")
     }
+    
+    static func module(for value: Value, parent: Module?) -> Module {
+        Module(name: value.name, outputs: [.init(value: value)], parent: parent)
+    }
+    
 }
