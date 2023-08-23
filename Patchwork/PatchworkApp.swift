@@ -5,9 +5,13 @@ import UniformTypeIdentifiers
 @main
 struct PatchworkApp: App {
     var body: some Scene {
-        DocumentGroup(editing: Module.self, contentType: .itemDocument) {
+//        DocumentGroup(editing: [Node.self], contentType: .itemDocument) {
+//            ContentView()
+//        }
+        WindowGroup {
             ContentView()
         }
+        .modelContainer(for: Node.self)
     }
 }
 

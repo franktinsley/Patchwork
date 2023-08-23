@@ -10,52 +10,56 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var modules: [Module]
-    @State private var showingAddModuleDialog = false
+    @Query private var nodes: [Node]
+    @State private var showingAddNodeDialog = false
 
     var body: some View {
         NavigationStack {
-            ZStack {
-                ForEach(modules) { module in
-                    if module.parent == nil {
-                        ModuleView(module: module)
+            ScrollView([.horizontal, .vertical]) {
+                ForEach(nodes) { node in
+                    if node.parent == nil {
+                        NodeView(node: node)
                     }
                 }
-                .onDelete(perform: deleteModules)
+                .onDelete(perform: deleteNodes)
             }
+            .defaultScrollAnchor(.top)
             .toolbar {
                 ToolbarItem {
-                    Button(action: { showingAddModuleDialog = true }) {
-                        Label("Add Module", systemImage: "plus")
+                    Button(action: { showingAddNodeDialog = true }) {
+                        Label("Add Node", systemImage: "plus")
                     }
                 }
             }
         }
         .confirmationDialog(
-            "Add Module",
-            isPresented: $showingAddModuleDialog
+            "Add Node",
+            isPresented: $showingAddNodeDialog
         ) {
             ForEach(Value.allCases) { value in
-                Button(value.name) { addModule(module: Module.module(for: value, parent: nil)) }
+                Button(value.name) {
+                    addNode(node: Node.of(type: .intermediate, for: value, inside: nil))
+                }
             }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("Choose module to add")
+            Text("Choose node to add")
         }
     }
 
-    private func addModule(module: Module) {
-        modelContext.insert(module)
+    private func addNode(node: Node) {
+        modelContext.insert(node)
     }
 
-    private func deleteModules(at offsets: IndexSet) {
+    private func deleteNodes(at offsets: IndexSet) {
         for index in offsets {
-            modelContext.delete(modules[index])
+            modelContext.delete(nodes[index])
         }
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(PreviewSampleData.container)
+//        .modelContainer(PreviewSampleData.container)
+        .modelContainer(for: Node.self, inMemory: true)
 }
