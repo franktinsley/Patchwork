@@ -70,7 +70,11 @@ struct DraggableRoundedRectangle: View {
             }
         )
         .onTapGesture {
-            selectedNodes.insert(node)
+            if selectedNodes.contains(node) {
+                selectedNodes.remove(node)
+            } else {
+                selectedNodes.insert(node)
+            }
         }
         .onChange(of: selectedNodes) {
             if !selectedNodes.contains(node) {

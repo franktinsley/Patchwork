@@ -72,6 +72,6 @@ extension Node {
     }
 
     static func of(type: NodeType, for value: Value, inside parent: Node?, x: Double, y: Double, order: Int) -> Node {
-        Node(name: value.name, order: order, x: x, y: y, type: type, value: value, parent: parent)
+        Node(name: value.name, order: order, x: x, y: y, initialX: x, initialY: y, type: type, value: value, parent: parent)
     }
 }
