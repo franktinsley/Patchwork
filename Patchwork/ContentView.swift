@@ -11,7 +11,7 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Node.order, order: .forward) var nodes: [Node]
-    @State private var selectedNode: Node?
+    @State private var selectedNodes: Set<Node> = []
     @State private var contentOffset: CGPoint = .init(x: 0, y: 0)
     @State private var zoomScale: CGFloat = 1
     let canvasSize = CGSize(width: 20000, height: 20000)
@@ -25,14 +25,15 @@ struct ContentView: View {
                         RoundedRectangle(cornerRadius: 25)
                             .fill(.ultraThinMaterial)
                             .onTapGesture {
-                                selectedNode = nil
+                                selectedNodes.removeAll()
                             }
                         ForEach(nodes) { node in
-                            DraggableRoundedRectangle(node: node, selectedNode: $selectedNode, canvasSize: canvasSize)
+                            DraggableRoundedRectangle(node: node, selectedNodes: $selectedNodes, canvasSize: canvasSize)
                         }
                     }
-                    .onChange(of: selectedNode) {
-                        if let node = selectedNode {
+                    .onChange(of: selectedNodes) { oldValue, newValue in
+                        let newNodes = newValue.subtracting(oldValue)
+                        if let node = newNodes.first {
                             self.moveToEnd(node, in: nodes)
                         }
                     }
@@ -66,7 +67,7 @@ struct ContentView: View {
                         Button(action: removeSelected) {
                             Label("Remove Selected Node", systemImage: "minus")
                         }
-                        .disabled(selectedNode == nil)
+                        .disabled(selectedNodes.isEmpty)
                     }
                 }
             }
@@ -127,14 +128,16 @@ struct ContentView: View {
         let y = (contentOffset.y + geometry.size.height / 2) / zoomScale - canvasSize.height / 2
         let newNode = Node.of(type: .intermediate, for: value, inside: nil, x: x, y: y, order: nodes.count)
         modelContext.insert(newNode)
-        selectedNode = newNode
+        selectedNodes.removeAll()
+        selectedNodes.insert(newNode)
         print("Added node")
     }
 
     func removeSelected() {
-        guard let selected = selectedNode else { return }
-        modelContext.delete(selected)
-        selectedNode = nil
+        for node in selectedNodes {
+            modelContext.delete(node)
+        }
+        selectedNodes.removeAll()
     }
 
 //    private func addNode(node: Node, geometry: GeometryProxy) {

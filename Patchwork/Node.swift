@@ -2,11 +2,13 @@ import Foundation
 import SwiftData
 
 @Model
-final class Node: Orderable {
+final class Node: Orderable, Hashable {
     var name: String?
     var order: Int
     var x: Double
     var y: Double
+    var initialX: Double
+    var initialY: Double
 
     private var _type: Int
     var type: NodeType {
@@ -28,11 +30,13 @@ final class Node: Orderable {
     @Relationship(deleteRule: .cascade) var children: [Node]
     var connections: [Node]
 
-    init(name: String? = nil, order: Int = 0, x: Double = 100, y: Double = 100, type: NodeType = .input, value: Value? = nil, inputs: [Node] = [], outputs: [Node] = [], parent: Node? = nil, start: Node? = nil, children: [Node] = [], connections: [Node] = []) {
+    init(name: String? = nil, order: Int = 0, x: Double = 100, y: Double = 100, initialX: Double = 100, initialY: Double = 100, type: NodeType = .input, value: Value? = nil, inputs: [Node] = [], outputs: [Node] = [], parent: Node? = nil, start: Node? = nil, children: [Node] = [], connections: [Node] = []) {
         self.name = name
         self.order = order
         self.x = x
         self.y = y
+        self.initialX = initialX
+        self.initialY = initialY
         self._type = type.rawValue
         self._value = try! String(data: JSONEncoder().encode(value), encoding: .utf8)!
         self.inputs = inputs

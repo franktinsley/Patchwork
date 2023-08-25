@@ -3,18 +3,20 @@ import SwiftUI
 struct DraggableRoundedRectangle: View {
     @Environment(\.colorScheme) var colorScheme
     @Bindable var node: Node
-    @Binding var selectedNode: Node?
-    @State private var initialOffset: CGSize
+    @Binding var selectedNodes: Set<Node>
+//    @State private var initialOffset: CGSize
     @State private var someString = ""
 //    @State private var shadowRadius: CGFloat = 10
     var canvasSize: CGSize
     let width: CGFloat = 200
     let height: CGFloat = 200
 
-    init(node: Node, selectedNode: Binding<Node?>, canvasSize: CGSize) {
+    init(node: Node, selectedNodes: Binding<Set<Node>>, canvasSize: CGSize) {
+//        node.initialX = node.x
+//        node.initialY = node.y
         self.node = node
-        self._selectedNode = selectedNode
-        self._initialOffset = State(initialValue: CGSize(width: node.x, height: node.y))
+        self._selectedNodes = selectedNodes
+//        self._initialOffset = State(initialValue: CGSize(width: node.x, height: node.y))
         self.canvasSize = canvasSize
     }
 
@@ -36,7 +38,7 @@ struct DraggableRoundedRectangle: View {
                     Rectangle()
                         .fill(.ultraThinMaterial)
                     Rectangle()
-                        .fill(selectedNode === node ? Color.accentColor : Color.orange)
+                        .fill(selectedNodes.contains(node) ? Color.accentColor : Color.orange)
                         .blendMode(colorScheme == .dark ? .lighten : .darken)
                 }
             }
@@ -47,23 +49,31 @@ struct DraggableRoundedRectangle: View {
         .offset(CGSize(width: node.x, height: node.y))
         .gesture(DragGesture(minimumDistance: 1)
             .onChanged { value in
-                self.selectedNode = self.node
-                let newX = self.initialOffset.width + value.translation.width
-                let newY = self.initialOffset.height + value.translation.height
+                if !selectedNodes.contains(node) {
+                    selectedNodes.removeAll()
+                    selectedNodes.insert(node)
+                }
+                for selectedNode in selectedNodes {
+                    let newX = selectedNode.initialX + value.translation.width
+                    let newY = selectedNode.initialY + value.translation.height
 
-                self.node.x = min(max(-(canvasSize.width / 2) + width / 2, newX), Double(canvasSize.width / 2 - width / 2))
-                self.node.y = min(max(-(canvasSize.height / 2) + height / 2, newY), Double(canvasSize.height / 2 - height / 2))
+                    selectedNode.x = min(max(-(canvasSize.width / 2) + width / 2, newX), Double(canvasSize.width / 2 - width / 2))
+                    selectedNode.y = min(max(-(canvasSize.height / 2) + height / 2, newY), Double(canvasSize.height / 2 - height / 2))
+                }
             }
             .onEnded { _ in
-                self.initialOffset.width = self.node.x
-                self.initialOffset.height = self.node.y
+                guard selectedNodes.contains(node) else { return }
+                for selectedNode in selectedNodes {
+                    selectedNode.initialX = selectedNode.x
+                    selectedNode.initialY = selectedNode.y
+                }
             }
         )
         .onTapGesture {
-            selectedNode = node
+            selectedNodes.insert(node)
         }
-        .onChange(of: selectedNode) {
-            if selectedNode !== node {
+        .onChange(of: selectedNodes) {
+            if !selectedNodes.contains(node) {
                 focusedField = nil
             }
         }
