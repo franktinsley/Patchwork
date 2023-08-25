@@ -2,8 +2,9 @@ import Foundation
 import SwiftData
 
 @Model
-final class Node {
+final class Node: Orderable {
     var name: String?
+    var order: Int
     var x: Double
     var y: Double
 
@@ -27,8 +28,9 @@ final class Node {
     @Relationship(deleteRule: .cascade) var children: [Node]
     var connections: [Node]
 
-    init(name: String? = nil, x: Double = 100, y: Double = 100, type: NodeType = .input, value: Value? = nil, inputs: [Node] = [], outputs: [Node] = [], parent: Node? = nil, start: Node? = nil, children: [Node] = [], connections: [Node] = []) {
+    init(name: String? = nil, order: Int = 0, x: Double = 100, y: Double = 100, type: NodeType = .input, value: Value? = nil, inputs: [Node] = [], outputs: [Node] = [], parent: Node? = nil, start: Node? = nil, children: [Node] = [], connections: [Node] = []) {
         self.name = name
+        self.order = order
         self.x = x
         self.y = y
         self._type = type.rawValue
@@ -65,7 +67,7 @@ extension Node {
         )
     }
 
-    static func of(type: NodeType, for value: Value, inside parent: Node?) -> Node {
-        Node(name: value.name, type: type, value: value, parent: parent)
+    static func of(type: NodeType, for value: Value, inside parent: Node?, x: Double, y: Double, order: Int) -> Node {
+        Node(name: value.name, order: order, x: x, y: y, type: type, value: value, parent: parent)
     }
 }

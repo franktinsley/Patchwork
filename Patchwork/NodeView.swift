@@ -27,15 +27,12 @@ struct NodeView: View {
                     .badge(node.children.count)
             }
         }
-//        .frame(width: gridStep - (gridStep / 8), height: gridStep / 2 - (gridStep / 8))
         .frame(width: 100, height: 100)
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: gridStep / 4))
         .position(
             CGPoint(
                 x: node.x,
                 y: node.y
-//                x: min(max(round(node.positionX / gridStep) * gridStep, 0), gridStep * 5),
-//                y: min(max(round(node.positionY / 50) * 50, 0), gridStep * 7)
             )
         )
         .highPriorityGesture(
@@ -53,7 +50,7 @@ struct NodeView: View {
         ) {
             ForEach(Value.allCases) { value in
                 Button(value.name) {
-                    addNode(node: Node.of(type: .intermediate, for: value, inside: node))
+                    addNode(node: Node.of(type: .intermediate, for: value, inside: node, x: 0, y: 0, order: node.children.count))
                 }
             }
             Button("Cancel", role: .cancel) {}

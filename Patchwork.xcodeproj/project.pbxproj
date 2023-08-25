@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		223C3BC02A96C51C00C48813 /* Orderable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223C3BBF2A96C51C00C48813 /* Orderable.swift */; };
+		223C3BC22A96C59900C48813 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223C3BC12A96C59900C48813 /* CanvasView.swift */; };
+		223C3BC42A98170C00C48813 /* DraggableRoundedRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223C3BC32A98170C00C48813 /* DraggableRoundedRectangle.swift */; };
 		226B68AE2A7B0F52008CA709 /* PatchworkApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226B68AD2A7B0F52008CA709 /* PatchworkApp.swift */; };
 		226B68B02A7B0F52008CA709 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226B68AF2A7B0F52008CA709 /* ContentView.swift */; };
 		226B68B42A7B0F54008CA709 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 226B68B32A7B0F54008CA709 /* Assets.xcassets */; };
@@ -19,6 +22,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		223C3BBF2A96C51C00C48813 /* Orderable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orderable.swift; sourceTree = "<group>"; };
+		223C3BC12A96C59900C48813 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
+		223C3BC32A98170C00C48813 /* DraggableRoundedRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableRoundedRectangle.swift; sourceTree = "<group>"; };
 		226B68AA2A7B0F52008CA709 /* Patchwork.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Patchwork.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		226B68AD2A7B0F52008CA709 /* PatchworkApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchworkApp.swift; sourceTree = "<group>"; };
 		226B68AF2A7B0F52008CA709 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -65,8 +71,11 @@
 			children = (
 				226B68AD2A7B0F52008CA709 /* PatchworkApp.swift */,
 				226B68AF2A7B0F52008CA709 /* ContentView.swift */,
+				223C3BC12A96C59900C48813 /* CanvasView.swift */,
 				22E407962A7D7383006E1E6A /* NodeView.swift */,
 				226B68BF2A7B0FCF008CA709 /* Node.swift */,
+				223C3BC32A98170C00C48813 /* DraggableRoundedRectangle.swift */,
+				223C3BBF2A96C51C00C48813 /* Orderable.swift */,
 				2288E3D32A8181C200BBBE31 /* NodeType.swift */,
 				226B68C52A7B11B2008CA709 /* Value.swift */,
 				22E407B62A7D78E2006E1E6A /* PreviewSampleData.swift */,
@@ -158,11 +167,14 @@
 			files = (
 				226B68C62A7B11B2008CA709 /* Value.swift in Sources */,
 				2288E3D42A8181C200BBBE31 /* NodeType.swift in Sources */,
+				223C3BC02A96C51C00C48813 /* Orderable.swift in Sources */,
 				226B68B02A7B0F52008CA709 /* ContentView.swift in Sources */,
 				22E407972A7D7383006E1E6A /* NodeView.swift in Sources */,
 				226B68C02A7B0FCF008CA709 /* Node.swift in Sources */,
 				226B68AE2A7B0F52008CA709 /* PatchworkApp.swift in Sources */,
 				22E407B72A7D78E2006E1E6A /* PreviewSampleData.swift in Sources */,
+				223C3BC22A96C59900C48813 /* CanvasView.swift in Sources */,
+				223C3BC42A98170C00C48813 /* DraggableRoundedRectangle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
