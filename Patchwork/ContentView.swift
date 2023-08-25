@@ -130,7 +130,6 @@ struct ContentView: View {
         modelContext.insert(newNode)
         selectedNodes.removeAll()
         selectedNodes.insert(newNode)
-        print("Added node")
     }
 
     func removeSelected() {

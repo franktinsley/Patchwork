@@ -47,7 +47,7 @@ struct DraggableRoundedRectangle: View {
         .clipShape(RoundedRectangle(cornerRadius: 25.0))
         .frame(width: width, height: height)
         .offset(CGSize(width: node.x, height: node.y))
-        .gesture(DragGesture(minimumDistance: 1)
+        .gesture(DragGesture(minimumDistance: 5)
             .onChanged { value in
                 if !selectedNodes.contains(node) {
                     selectedNodes.removeAll()
