@@ -5,11 +5,13 @@ struct CanvasView<Content: View>: UIViewRepresentable {
     @Binding var contentOffset: CGPoint
     @Binding var zoomScale: CGFloat
     let size: CGSize
+    let defaultZoomScale: CGFloat
     let minimumZoomScale: CGFloat
     let maximumZoomScale: CGFloat
 
-    init(size: CGSize = CGSize(width: 20000, height: 20000), minimumZoomScale: CGFloat = 0.05, maximumZoomScale: CGFloat = 5, contentOffset: Binding<CGPoint>, zoomScale: Binding<CGFloat>, @ViewBuilder content: @escaping () -> Content) {
+    init(size: CGSize = CGSize(width: 20000, height: 20000), defaultZoomScale: CGFloat = 0.5, minimumZoomScale: CGFloat = 0.05, maximumZoomScale: CGFloat = 5, contentOffset: Binding<CGPoint>, zoomScale: Binding<CGFloat>, @ViewBuilder content: @escaping () -> Content) {
         self.size = size
+        self.defaultZoomScale = defaultZoomScale
         self.minimumZoomScale = minimumZoomScale
         self.maximumZoomScale = maximumZoomScale
         self._contentOffset = contentOffset
@@ -21,6 +23,7 @@ struct CanvasView<Content: View>: UIViewRepresentable {
         let scrollView = UIScrollView()
         scrollView.delegate = context.coordinator
         scrollView.contentOffset = contentOffset
+//        scrollView.zoomScale = defaultZoomScale
         scrollView.minimumZoomScale = minimumZoomScale
         scrollView.maximumZoomScale = maximumZoomScale
 //        scrollView.contentInsetAdjustmentBehavior = .never
@@ -38,7 +41,8 @@ struct CanvasView<Content: View>: UIViewRepresentable {
             hostingController.view.widthAnchor.constraint(equalToConstant: size.width),
             hostingController.view.heightAnchor.constraint(equalToConstant: size.height)
         ])
-
+        
+        scrollView.setZoomScale(defaultZoomScale, animated: false)
         return scrollView
     }
 

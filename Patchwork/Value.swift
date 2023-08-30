@@ -1,4 +1,4 @@
-import Foundation
+import SwiftUI
 
 enum Value: Codable {
     case order

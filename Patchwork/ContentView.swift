@@ -14,21 +14,27 @@ struct ContentView: View {
     @State private var selectedNodes: Set<Node> = []
     @State private var contentOffset: CGPoint = .init(x: 0, y: 0)
     @State private var zoomScale: CGFloat = 1
+    @State private var draggingNode: Node?
+    @State private var pressingNode: Node?
     let canvasSize = CGSize(width: 20000, height: 20000)
+    let defaultZoomScale = 0.5
     let canvasMinimumZoomScale = 0.1
 
     var body: some View {
         GeometryReader { geometry in
             NavigationStack {
-                CanvasView(size: canvasSize, minimumZoomScale: canvasMinimumZoomScale, contentOffset: $contentOffset, zoomScale: $zoomScale) {
+                CanvasView(size: canvasSize, defaultZoomScale: defaultZoomScale, minimumZoomScale: canvasMinimumZoomScale, contentOffset: $contentOffset, zoomScale: $zoomScale) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 25)
                             .fill(.ultraThinMaterial)
                             .onTapGesture {
+                                if draggingNode != nil {
+                                    return
+                                }
                                 selectedNodes.removeAll()
                             }
                         ForEach(nodes) { node in
-                            DraggableRoundedRectangle(node: node, selectedNodes: $selectedNodes, canvasSize: canvasSize)
+                            DraggableRoundedRectangle(node: node, selectedNodes: $selectedNodes, draggingNode: $draggingNode, pressingNode: $pressingNode, canvasSize: canvasSize)
                         }
                     }
                     .onChange(of: selectedNodes) { oldValue, newValue in
@@ -43,13 +49,13 @@ struct ContentView: View {
                 .toolbar {
                     ToolbarItem {
                         Button(action: {
-                            if zoomScale.isEqual(to: 1) {
+                            if zoomScale.isEqual(to: defaultZoomScale) {
                                 zoomScale = canvasMinimumZoomScale
                             } else {
-                                zoomScale = 1
+                                zoomScale = defaultZoomScale
                             }
                         }) {
-                            Label("Reset Zoom", systemImage: zoomScale >= 1 ? "minus.magnifyingglass" : "plus.magnifyingglass")
+                            Label("Reset Zoom", systemImage: zoomScale >= defaultZoomScale ? "minus.magnifyingglass" : "plus.magnifyingglass")
                         }
                     }
                     ToolbarItem {

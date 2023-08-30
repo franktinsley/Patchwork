@@ -4,19 +4,21 @@ struct DraggableRoundedRectangle: View {
     @Environment(\.colorScheme) var colorScheme
     @Bindable var node: Node
     @Binding var selectedNodes: Set<Node>
-//    @State private var initialOffset: CGSize
+    @Binding var draggingNode: Node?
+    @Binding var pressingNode: Node?
     @State private var someString = ""
-//    @State private var shadowRadius: CGFloat = 10
+    @State private var dragStartLocation = CGPoint.zero
+    @State private var dragging = false
+//    @State private var pressing = false
     var canvasSize: CGSize
     let width: CGFloat = 200
     let height: CGFloat = 200
 
-    init(node: Node, selectedNodes: Binding<Set<Node>>, canvasSize: CGSize) {
-//        node.initialX = node.x
-//        node.initialY = node.y
+    init(node: Node, selectedNodes: Binding<Set<Node>>, draggingNode: Binding<Node?>, pressingNode: Binding<Node?>, canvasSize: CGSize) {
         self.node = node
         self._selectedNodes = selectedNodes
-//        self._initialOffset = State(initialValue: CGSize(width: node.x, height: node.y))
+        self._draggingNode = draggingNode
+        self._pressingNode = pressingNode
         self.canvasSize = canvasSize
     }
 
@@ -33,50 +35,94 @@ struct DraggableRoundedRectangle: View {
                     .focused($focusedField, equals: .textField)
                 Text(node.value?.name ?? "Some Node")
             }
+            .scrollDisabled(true)
+            .clipShape(RoundedRectangle(cornerRadius: 25))
             .background {
                 ZStack {
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: 25)
                         .fill(.ultraThinMaterial)
-                    Rectangle()
-                        .fill(selectedNodes.contains(node) ? Color.accentColor : Color.orange)
+                    RoundedRectangle(cornerRadius: 25)
+                        .fill(selectedNodes.contains(node) ? Color.accentColor : node.type.color)
                         .blendMode(colorScheme == .dark ? .lighten : .darken)
                 }
             }
             .scrollContentBackground(.hidden)
         }
-        .clipShape(RoundedRectangle(cornerRadius: 25.0))
         .frame(width: width, height: height)
         .offset(CGSize(width: node.x, height: node.y))
-        .gesture(DragGesture(minimumDistance: 5)
+        .gesture(DragGesture(minimumDistance: 1)
             .onChanged { value in
-                if !selectedNodes.contains(node) {
-                    selectedNodes.removeAll()
-                    selectedNodes.insert(node)
+                if draggingNode == nil { // no primary dragging node yet
+                    draggingNode = node // make this node the priomary dragging node
+                } else if draggingNode != node {
+                    return // Don't do anything if this drag is happening on a node that isn't the primary dragging node
                 }
+
+                if !dragging {
+                    dragging = true // onDragBegin
+                    if selectedNodes.isEmpty { // No nodes yet selected
+                        dragStartLocation = value.startLocation // Store the single primary drag's start location as the actual drag gesture's start location
+                    } else {
+                        dragStartLocation = value.location // There are currently nodes select so we need to restart the drag start location so the new nodes get moved starting from here
+                    }
+                }
+
+                if !selectedNodes.contains(node) { // This node is being dragged but is not yet selected
+                    selectedNodes.removeAll() // Deselect all nodes
+                    selectedNodes.insert(node) // Select this node
+                }
+
                 for selectedNode in selectedNodes {
-                    let newX = selectedNode.initialX + value.translation.width
-                    let newY = selectedNode.initialY + value.translation.height
+                    let newX = selectedNode.initialX + value.location.x - dragStartLocation.x
+                    let newY = selectedNode.initialY + value.location.y - dragStartLocation.y
 
                     selectedNode.x = min(max(-(canvasSize.width / 2) + width / 2, newX), Double(canvasSize.width / 2 - width / 2))
                     selectedNode.y = min(max(-(canvasSize.height / 2) + height / 2, newY), Double(canvasSize.height / 2 - height / 2))
                 }
             }
             .onEnded { _ in
-                guard selectedNodes.contains(node) else { return }
-                for selectedNode in selectedNodes {
-                    selectedNode.initialX = selectedNode.x
-                    selectedNode.initialY = selectedNode.y
+                if draggingNode == node {
+                    draggingNode = nil
+                    dragging = false
+                    guard selectedNodes.contains(node) else { return }
+                    for selectedNode in selectedNodes {
+                        selectedNode.initialX = selectedNode.x
+                        selectedNode.initialY = selectedNode.y
+                    }
+                }
+            })
+        .onTapGesture {
+            if draggingNode == nil { // not dragging any node
+                selectedNodes.removeAll() // deselect all nodes
+                selectedNodes.insert(node) // select this node
+            } else {
+                if selectedNodes.contains(node) { // node is selected
+                    selectedNodes.remove(node) // unselect node
+                } else {
+                    selectedNodes.insert(node) // select node
+                }
+            }
+        }
+        .onLongPressGesture(
+            perform: {},
+            onPressingChanged: { pressing in
+                if pressing {
+                    if pressingNode == nil {
+                        pressingNode = node
+                    } else if pressingNode != node {
+                        return
+                    }
+                } else if pressingNode == node {
+                    pressingNode = nil
                 }
             }
         )
-        .onTapGesture {
-            if selectedNodes.contains(node) {
-                selectedNodes.remove(node)
-            } else {
-                selectedNodes.insert(node)
-            }
-        }
         .onChange(of: selectedNodes) {
+            dragging = false
+            for selectedNode in selectedNodes {
+                selectedNode.initialX = selectedNode.x
+                selectedNode.initialY = selectedNode.y
+            }
             if !selectedNodes.contains(node) {
                 focusedField = nil
             }
