@@ -5,20 +5,17 @@ struct DraggableRoundedRectangle: View {
     @Bindable var node: Node
     @Binding var selectedNodes: Set<Node>
     @Binding var draggingNode: Node?
-    @Binding var pressingNode: Node?
     @State private var someString = ""
     @State private var dragStartLocation = CGPoint.zero
     @State private var dragging = false
-//    @State private var pressing = false
     var canvasSize: CGSize
     let width: CGFloat = 200
     let height: CGFloat = 200
 
-    init(node: Node, selectedNodes: Binding<Set<Node>>, draggingNode: Binding<Node?>, pressingNode: Binding<Node?>, canvasSize: CGSize) {
+    init(node: Node, selectedNodes: Binding<Set<Node>>, draggingNode: Binding<Node?>, canvasSize: CGSize) {
         self.node = node
         self._selectedNodes = selectedNodes
         self._draggingNode = draggingNode
-        self._pressingNode = pressingNode
         self.canvasSize = canvasSize
     }
 
@@ -103,20 +100,6 @@ struct DraggableRoundedRectangle: View {
                 }
             }
         }
-        .onLongPressGesture(
-            perform: {},
-            onPressingChanged: { pressing in
-                if pressing {
-                    if pressingNode == nil {
-                        pressingNode = node
-                    } else if pressingNode != node {
-                        return
-                    }
-                } else if pressingNode == node {
-                    pressingNode = nil
-                }
-            }
-        )
         .onChange(of: selectedNodes) {
             dragging = false
             for selectedNode in selectedNodes {
