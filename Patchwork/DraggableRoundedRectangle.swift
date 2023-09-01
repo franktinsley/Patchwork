@@ -25,7 +25,56 @@ struct DraggableRoundedRectangle: View {
 
     @FocusState private var focusedField: Field?
 
+//    enum DragState {
+//        case inactive
+//        case pressing
+//        case dragging(translation: CGSize)
+//
+//        var translation: CGSize {
+//            switch self {
+//            case .inactive, .pressing: .zero
+//            case .dragging(let translation): translation
+//            }
+//        }
+//
+//        var isActive: Bool {
+//            switch self {
+//            case .inactive: false
+//            case .pressing, .dragging: true
+//            }
+//        }
+//
+//        var isDragging: Bool {
+//            switch self {
+//            case .inactive, .pressing: false
+//            case .dragging: true
+//            }
+//        }
+//    }
+
+//    @GestureState private var dragState = DragState.inactive
+//    @State private var viewState = CGSize.zero
+
     var body: some View {
+//        let minimumLongPressDuration = 0.5
+//        let longPressDrag = LongPressGesture(minimumDuration: minimumLongPressDuration)
+//            .sequenced(before: DragGesture(minimumDistance: 0))
+//            .updating($dragState) { value, state, _ in
+//                switch value {
+//                case .first(true):
+//                    state = .pressing
+//                case .second(true, let drag):
+//                    state = .dragging(translation: drag?.translation ?? .zero)
+//                default:
+//                    state = .inactive
+//                }
+//            }
+//            .onEnded { value in
+//                guard case .second(true, let drag?) = value else { return }
+//                self.viewState.width += drag.translation.width
+//                self.viewState.height += drag.translation.height
+//            }
+//
         ZStack {
             Form {
                 TextField("Whatever", text: $someString)

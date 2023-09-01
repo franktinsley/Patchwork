@@ -15,6 +15,7 @@ struct ContentView: View {
     @State private var contentOffset: CGPoint = .init(x: 0, y: 0)
     @State private var zoomScale: CGFloat = 1
     @State private var draggingNode: Node?
+    @State private var allowsNodeHitTesting = false
     let canvasSize = CGSize(width: 20000, height: 20000)
     let defaultZoomScale = 0.5
     let canvasMinimumZoomScale = 0.1
@@ -35,6 +36,13 @@ struct ContentView: View {
                         ForEach(nodes) { node in
                             DraggableRoundedRectangle(node: node, selectedNodes: $selectedNodes, draggingNode: $draggingNode, canvasSize: canvasSize)
                         }
+                        .allowsHitTesting(false)
+//                        Rectangle()
+//                            .fill(.clear)
+//                            .contentShape(Rectangle())
+//                            .onLongPressGesture {
+//                                allowsNodeHitTesting = true
+//                            }
                     }
                     .onChange(of: selectedNodes) { oldValue, newValue in
                         let newNodes = newValue.subtracting(oldValue)
