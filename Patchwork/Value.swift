@@ -52,7 +52,7 @@ extension Value {
         case .string: "String"
         }
     }
-    
+
     var metal: String {
         switch self {
         case .order: "order"

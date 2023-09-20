@@ -33,7 +33,7 @@ struct ContentView: View {
                                 selectedNodes.removeAll()
                             }
                         ForEach(nodes) { node in
-                            DraggableRoundedRectangle(node: node, selectedNodes: $selectedNodes, draggingNode: $draggingNode, canvasSize: canvasSize)
+                            NodeView(node: node, selectedNodes: $selectedNodes, draggingNode: $draggingNode, canvasSize: canvasSize)
                         }
                     }
                     .onChange(of: selectedNodes) { oldValue, newValue in
