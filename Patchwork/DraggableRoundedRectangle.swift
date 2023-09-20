@@ -27,6 +27,18 @@ struct DraggableRoundedRectangle: View {
 
     var body: some View {
         ZStack {
+            // Pointless wires
+            let path = Path { path in
+                path.move(to: .zero)
+                path.addLine(
+                    to: CGPoint(
+                        x: -node.x,
+                        y: -node.y
+                    )
+                )
+            }
+            path.stroke(Color.accentColor, lineWidth: 6)
+            
             Form {
                 TextField("Whatever", text: $someString)
                     .focused($focusedField, equals: .textField)
